@@ -1,5 +1,8 @@
 package edu.usc.roohy.recorder;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -23,13 +26,22 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mPlayer = null;
     boolean isRecording = false;
     boolean isPlaying = false;
+
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/audiorecordtest.3gp";
+        mFileName += "/audiorecordtest";
+
+        //Sensor stuff
+        //mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        //mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
 
+        //end of sensor stuff
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -101,9 +113,10 @@ public class MainActivity extends AppCompatActivity {
     private void startRecording(){
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
         mRecorder.setOutputFile(mFileName);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mRecorder.setAudioSamplingRate(96000);
 
         try{
             mRecorder.prepare();
